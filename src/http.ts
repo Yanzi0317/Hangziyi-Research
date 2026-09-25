@@ -17,7 +17,7 @@ export function authorize(req: Request) {
       throw new Error("访问密钥无效。");
   }
 }
-export async function readBody(req: Request) {
+export async function readBody(req: Request, maxBytes = 20000) {
   const reader = req.body?.getReader();
   if (!reader) throw new Error("请求为空");
   const chunks: Uint8Array[] = [];
@@ -26,7 +26,7 @@ export async function readBody(req: Request) {
     const { done, value } = await reader.read();
     if (done) break;
     size += value.length;
-    if (size > 20000) {
+    if (size > maxBytes) {
       await reader.cancel();
       throw new Error("请求过大");
     }

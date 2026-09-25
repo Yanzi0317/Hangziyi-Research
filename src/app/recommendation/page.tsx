@@ -1,9 +1,13 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSession } from "../providers";
 import { Results } from "../result-view";
-import { listVersions, defaultVersion } from "../../recommendation/registry";
+import {
+  listVersions,
+  defaultVersion,
+  getVersion,
+} from "../../recommendation/registry";
 import {
   predictScenarios,
   scenarioInputSchema,
@@ -11,8 +15,23 @@ import {
 } from "../../prediction/scenario";
 import { ScenarioView } from "../scenario-view";
 export default function RecommendationPage() {
-  const { profile, run, setRun, accessKey, setAccessKey } = useSession();
+  const {
+    profile,
+    run,
+    setRun,
+    accessKey,
+    setAccessKey,
+    consent,
+    preferredVersion,
+  } = useSession();
   const [version, setVersion] = useState<string>(defaultVersion);
+  useEffect(() => {
+    // An invite link (?v=) can pre-select the version a tester should use.
+    if (!preferredVersion) return;
+    try {
+      setVersion(getVersion(preferredVersion).version);
+    } catch {}
+  }, [preferredVersion]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [scenario, setScenario] = useState<ScenarioInput>(
@@ -35,6 +54,19 @@ export default function RecommendationPage() {
       <p className="lead">
         这些是需要验证的方向，不是职业排名。生成时会向配置的模型服务发送当前画像。
       </p>
+      {consent.status === "undecided" && (
+        <div className="notice">
+          你还没有阅读参与说明。<Link href="/consent">先看一下</Link>
+          ，再决定是否让本次结果进入测试记录。
+        </div>
+      )}
+      {consent.status === "accepted" && (
+        <div className="notice">
+          测试模式：本次生成的画像与结果会以匿名方式记录（参与者编号{" "}
+          {consent.context.participantId.slice(0, 8)}
+          ）。生成后请到“使用反馈”页回答五个问题。
+        </div>
+      )}
       {version === "v3.2" && (
         <>
           <div className="card">
@@ -132,6 +164,9 @@ export default function RecommendationPage() {
                     profile,
                     version,
                     ...(version === "v3.2" ? { scenario } : {}),
+                    ...(consent.status === "accepted"
+                      ? { beta: consent.context }
+                      : {}),
                   }),
                 });
                 const data = await response.json();
@@ -148,6 +183,7 @@ export default function RecommendationPage() {
             {busy ? "正在检查证据并生成…" : "生成探索建议"}
           </button>
           {run && <Link href="/skill-gap">查看技能与行动 →</Link>}
+          {run && run.beta?.stored && <Link href="/feedback">填写反馈 →</Link>}
         </div>
         {error && (
           <p className="error" role="alert">
@@ -157,6 +193,13 @@ export default function RecommendationPage() {
       </div>
       {run && (
         <>
+          {run.beta && (
+            <p className={run.beta.stored ? "hint" : "error"}>
+              {run.beta.stored
+                ? `本次结果已匿名记录（${run.beta.store}）。`
+                : `本次结果未能记录：${run.beta.error ?? "未知原因"}`}
+            </p>
+          )}
           <p className="hint">
             以下为上次生成的建议及当时条件。调整上方条件后，请重新生成行业与岗位建议。
           </p>

@@ -15,7 +15,7 @@ const educationLabels = [
 ];
 const aiLabels = ["从未使用", "偶尔使用", "经常使用", "开发或搭建工具"];
 export default function ProfilePage() {
-  const { profile, setProfile } = useSession();
+  const { profile, setProfile, consent } = useSession();
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
   const [tags, setTags] = useState(profile?.skills ?? []);
@@ -31,6 +31,22 @@ export default function ProfilePage() {
       setTags([...tags, v]);
     setTag("");
   }
+  if (consent.status === "undecided")
+    return (
+      <>
+        <div className="eyebrow">USER PROFILE</div>
+        <h1>开始之前</h1>
+        <div className="card">
+          <p>
+            请先阅读参与说明，决定是否让你的输入、AI
+            结果和反馈以匿名方式记录。不同意也可以继续试用。
+          </p>
+          <Link className="button" href="/consent">
+            阅读参与说明
+          </Link>
+        </div>
+      </>
+    );
   return (
     <>
       <div className="eyebrow">USER PROFILE</div>
@@ -253,7 +269,10 @@ export default function ProfilePage() {
           我已移除本人或他人的身份信息。
         </label>
         <div className="notice">
-          画像只保留在当前页面会话中，刷新或关闭即清除。生成建议时，必要输入会发送给你配置的模型供应商；本站不保存画像或研究记录。
+          画像只保留在当前页面会话中，刷新或关闭即清除。生成建议时，画像会发送给配置的模型供应商。
+          {consent.status === "accepted"
+            ? "你已同意测试记录：生成后的画像副本与结果会在自动删除身份信息后匿名保存。"
+            : "你选择了不记录：本站不会保存画像、结果或反馈。"}
         </div>
         {error && (
           <p role="alert" className="error">

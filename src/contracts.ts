@@ -166,6 +166,8 @@ export type RunResult = {
   result: Recommendation;
   scenarioForecast?: ScenarioForecast;
   market: MarketContext;
+  // Present when the run was made by a consenting Beta participant.
+  beta?: { recordId: string; stored: boolean; store?: string; error?: string };
   meta: {
     version: string;
     promptVersion: string;

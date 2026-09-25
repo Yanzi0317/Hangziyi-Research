@@ -11,6 +11,6 @@ export const manifest = Object.freeze({
   syntheticPersonasAllowed: true,
   blockers: Object.freeze([
     "Live validation requires a configured model provider.",
-    "Not a beta-feedback-driven version; beta research is excluded.",
+    "Not yet beta-feedback-driven; real participant feedback is being collected per version and has not been analysed.",
   ]),
 } as const);

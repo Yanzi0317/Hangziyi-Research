@@ -31,7 +31,7 @@ export const versions = Object.freeze({
     status: "draft",
     runnable: true,
     researchIds: ["INT-01", "INT-02", "INT-03", "INT-04", "INT-05"],
-    limitations: ["无 Beta 数据；基于既有访谈和产品原则的未验证草案。"],
+    limitations: ["Beta 反馈尚未分析；基于既有访谈和产品原则的未验证草案。"],
   },
   "v3.1": {
     version: "v3.1",
@@ -82,4 +82,10 @@ export function getVersion(version: string) {
 export function requireRunnableVersion(version: string) {
   const entry = getVersion(version);
   return entry;
+}
+
+// Every runnable version can be handed to real Beta testers; the stored
+// record carries the version and prompt hash so feedback can be compared.
+export function listBetaVersions() {
+  return listVersions().filter((v) => v.runnable);
 }

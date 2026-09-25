@@ -13,10 +13,10 @@ export default function Home() {
           把经历、技能与目标转化为值得探索的行业和岗位。每条建议展示依据、假设与限制，不给职业打分，也不预测你的命运。
         </p>
         <div className="actions">
-          <Link className="button" href="/profile">
-            整理我的画像 →
+          <Link className="button" href="/consent">
+            参加测试 →
           </Link>
-          <Link href="/compare">查看版本对比</Link>
+          <Link href="/profile">直接整理我的画像</Link>
         </div>
       </section>
       <section className="grid">
@@ -34,7 +34,8 @@ export default function Home() {
       <div className="notice">
         当前默认
         v3.2：使用49份问卷与六人访谈的匿名汇总进行条件性情景预测，可不依赖模型先查看。
-        Q25因统计口径问题排除。旧版本保留；没有统计概率预测或 Beta 调研。
+        Q25因统计口径问题排除。旧版本 v1–v4 全部保留并可选择，Beta
+        测试者可以在任一版本上试用并反馈；所有记录匿名，不含姓名、联系方式或设备信息。
       </div>
     </>
   );

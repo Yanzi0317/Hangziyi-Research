@@ -9,10 +9,13 @@
     "build": "next build --webpack",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/core.test.ts tests/survey.test.ts tests/prediction.test.ts",
+    "test": "tsx --test tests/core.test.ts tests/survey.test.ts tests/prediction.test.ts tests/beta.test.ts",
     "compare": "tsx scripts/compare.ts",
     "personas": "tsx scripts/run-personas.ts",
-    "import:survey": "tsx scripts/import-survey.ts"
+    "import:survey": "tsx scripts/import-survey.ts",
+    "export:beta": "tsx scripts/export-beta.ts",
+    "withdraw:beta": "tsx scripts/withdraw-beta.ts",
+    "mock:llm": "node scripts/mock-llm.mjs"
   },
   "engines": {
     "node": ">=22.0.0"
