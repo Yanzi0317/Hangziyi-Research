@@ -10,9 +10,9 @@ import {
 // Configuration checks only: no personas, model calls, or generated recommendations.
 assert.deepEqual(
   listVersions().map((v) => v.version),
-  ["v1", "v2", "v3", "v4", "v3.1"],
+  ["v1", "v2", "v3", "v4", "v3.1", "v3.2"],
 );
-assert.equal(defaultVersion, "v3");
+assert.equal(defaultVersion, "v3.2");
 assert.equal(getVersion("v4").status, "draft");
 assert.throws(() => getVersion("missing"), /Unknown recommendation version/);
 assert.throws(() => getVersion("__proto__"), /Unknown recommendation version/);

@@ -1,5 +1,6 @@
 "use client";
 import type { Recommendation, RunResult } from "../contracts";
+import { ScenarioView } from "./scenario-view";
 type Rationale = Recommendation["industries"][number]["rationale"];
 export function Why({ r }: { r: Rationale }) {
   return (
@@ -56,6 +57,9 @@ export function Results({
         {run.meta.researchLimitations.join("；")}
         {run.meta.adjusted && <p>部分评分或概率表达已移除。</p>}
       </div>
+      {!skillsOnly && run.scenarioForecast && (
+        <ScenarioView forecast={run.scenarioForecast} />
+      )}
       {run.result.industries.map((industry, i) => (
         <section className="card" key={i}>
           <h2>{industry.name}</h2>
@@ -234,6 +238,7 @@ export function Evidence({ run }: { run: RunResult }) {
           </p>
         </section>
       )}
+      {run.scenarioForecast && <ScenarioView forecast={run.scenarioForecast} />}
       <div className="card">
         <h2>市场趋势与个体推断</h2>
         {run.result.industries.map((i, k) => (

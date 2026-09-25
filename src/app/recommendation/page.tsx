@@ -4,11 +4,20 @@ import Link from "next/link";
 import { useSession } from "../providers";
 import { Results } from "../result-view";
 import { listVersions, defaultVersion } from "../../recommendation/registry";
+import {
+  predictScenarios,
+  scenarioInputSchema,
+  type ScenarioInput,
+} from "../../prediction/scenario";
+import { ScenarioView } from "../scenario-view";
 export default function RecommendationPage() {
   const { profile, run, setRun, accessKey, setAccessKey } = useSession();
   const [version, setVersion] = useState<string>(defaultVersion);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [scenario, setScenario] = useState<ScenarioInput>(
+    scenarioInputSchema.parse({}),
+  );
   const lock = useRef(false);
   if (!profile)
     return (
@@ -26,6 +35,63 @@ export default function RecommendationPage() {
       <p className="lead">
         这些是需要验证的方向，不是职业排名。生成时会向配置的模型服务发送当前画像。
       </p>
+      {version === "v3.2" && (
+        <>
+          <div className="card">
+            <h2>先做数据支持的情景预测</h2>
+            <p>
+              这部分直接运行版本化规则，无需模型密钥；输入仅在当前页面内存中。补充条件会即时改变预测，不猜测未填写的情况。
+            </p>
+            <label htmlFor="task">主要任务</label>
+            <select
+              id="task"
+              value={scenario.task}
+              onChange={(e) =>
+                setScenario({
+                  ...scenario,
+                  task: e.target.value as ScenarioInput["task"],
+                })
+              }
+            >
+              <option value="unknown">尚未确认</option>
+              <option value="information">信息整理、分析或初稿制作</option>
+              <option value="creative">内容、设计等创作</option>
+              <option value="interpersonal">现场服务、沟通或协调</option>
+            </select>
+            <label htmlFor="resources">合规工具与训练资源</label>
+            <select
+              id="resources"
+              value={scenario.resources}
+              onChange={(e) =>
+                setScenario({
+                  ...scenario,
+                  resources: e.target.value as ScenarioInput["resources"],
+                })
+              }
+            >
+              <option value="unknown">尚未确认</option>
+              <option value="available">已具备</option>
+              <option value="limited">资源受限</option>
+            </select>
+            <label htmlFor="learning">目标方向的实践基础</label>
+            <select
+              id="learning"
+              value={scenario.learningPath}
+              onChange={(e) =>
+                setScenario({
+                  ...scenario,
+                  learningPath: e.target.value as ScenarioInput["learningPath"],
+                })
+              }
+            >
+              <option value="unknown">尚未确认</option>
+              <option value="building">正在建立基础经验</option>
+              <option value="established">已有独立实践经验</option>
+            </select>
+          </div>
+          <ScenarioView forecast={predictScenarios(profile, scenario)} />
+        </>
+      )}
       <div className="card">
         <label htmlFor="version">推荐逻辑版本</label>
         <select
@@ -62,7 +128,11 @@ export default function RecommendationPage() {
                     "Content-Type": "application/json",
                     "x-access-key": accessKey,
                   },
-                  body: JSON.stringify({ profile, version }),
+                  body: JSON.stringify({
+                    profile,
+                    version,
+                    ...(version === "v3.2" ? { scenario } : {}),
+                  }),
                 });
                 const data = await response.json();
                 if (!response.ok) throw new Error(data.error);
@@ -85,7 +155,14 @@ export default function RecommendationPage() {
           </p>
         )}
       </div>
-      {run && <Results run={run} />}
+      {run && (
+        <>
+          <p className="hint">
+            以下为上次生成的建议及当时条件。调整上方条件后，请重新生成行业与岗位建议。
+          </p>
+          <Results run={run} />
+        </>
+      )}
     </>
   );
 }

@@ -14,6 +14,10 @@ import { getVersion } from "./registry.ts";
 import { marketSource } from "../market-data/service.ts";
 import { loadApprovedSurvey } from "../research/survey-context.ts";
 import {
+  predictScenarios,
+  type ScenarioInput,
+} from "../prediction/scenario.ts";
+import {
   sanitize,
   validateReferences,
   outputPolicyVersion,
@@ -24,12 +28,20 @@ export const hash = (data: unknown) =>
 export async function runRecommendation(
   input: unknown,
   version: string,
-  options: { market?: MarketContext; generator?: Generator } = {},
+  options: {
+    market?: MarketContext;
+    generator?: Generator;
+    scenario?: ScenarioInput;
+  } = {},
 ): Promise<RunResult> {
   const profile = profileSchema.parse(input);
   if (containsDirectContact(profile))
     throw new Error("请先移除联系方式或身份证信息。");
   const entry = getVersion(version);
+  const scenarioForecast =
+    entry.version === "v3.2"
+      ? predictScenarios(profile, options.scenario)
+      : undefined;
   const market = options.market ?? (await marketSource.load("initial"));
   // Historical versions remain pinned to their original context. Only the new
   // revision can read an explicitly approved survey; local quarantine is never read.
@@ -43,6 +55,7 @@ export async function runRecommendation(
   ];
   const researchLimitations = [
     ...entry.limitations,
+    ...(scenarioForecast?.evidence.limitations ?? []),
     ...(survey?.limitations ?? []),
   ];
   const files =
@@ -67,11 +80,20 @@ export async function runRecommendation(
     profile,
     market,
     researchRecords: [
-      ...entry.researchIds.map((id) => ({
-        id,
-        type: "qualitative_interview",
-        limitations: entry.limitations,
-      })),
+      ...(scenarioForecast
+        ? scenarioForecast.evidence.findings.map((f) => ({
+            ...f,
+            type: "qualitative_interview",
+            source: scenarioForecast.evidence.source,
+            sampleSize: scenarioForecast.evidence.sampleSize,
+            collectedAt: scenarioForecast.evidence.collectedAt,
+            region: scenarioForecast.evidence.region,
+          }))
+        : entry.researchIds.map((id) => ({
+            id,
+            type: "qualitative_interview",
+            limitations: entry.limitations,
+          }))),
       ...(survey?.findings ?? []),
     ],
     ...(survey
@@ -85,6 +107,7 @@ export async function runRecommendation(
         }
       : {}),
     researchLimitations,
+    ...(scenarioForecast ? { scenarioForecast } : {}),
   };
   const call = options.generator ?? generate;
   let final: ReturnType<typeof sanitize> | undefined;
@@ -103,6 +126,33 @@ export async function runRecommendation(
     try {
       const result = resultSchema.parse(raw);
       validateReferences(result, profile, market, researchIds);
+      if (
+        scenarioForecast &&
+        result.industries.some(
+          (i) =>
+            !i.jobFunctions.some((j) =>
+              j.rationale.researchFindingIds.some((id) =>
+                id.startsWith("DOCINT-"),
+              ),
+            ),
+        )
+      )
+        throw new Error("每个方向需解释相关访谈依据");
+      if (
+        scenarioForecast &&
+        !result.industries.some((i) =>
+          [
+            i.rationale,
+            ...i.jobFunctions.flatMap((j) => [
+              j.rationale,
+              ...j.skills.map((s) => s.rationale),
+            ]),
+          ].some((r) =>
+            r.researchFindingIds.some((id) => id.startsWith("SURVEY-")),
+          ),
+        )
+      )
+        throw new Error("缺少问卷依据的具体解释");
       final = sanitize(result);
       resultSchema.parse(final.result);
       validateReferences(final.result, profile, market, researchIds);
@@ -117,6 +167,7 @@ export async function runRecommendation(
   if (!final) throw new Error("没有可展示的生成结果");
   return {
     result: final.result,
+    ...(scenarioForecast ? { scenarioForecast } : {}),
     market,
     meta: {
       version: entry.version,
@@ -144,6 +195,7 @@ export async function runRecommendation(
         : {}),
       runtimeMode: options.generator ? "mock_test" : "live",
       adjusted: final.adjusted,
+      ...(scenarioForecast ? { scenarioHash: hash(scenarioForecast) } : {}),
     },
   };
 }

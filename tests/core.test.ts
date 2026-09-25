@@ -86,7 +86,7 @@ test("profile numeric boundaries, normalization, contact check", async () => {
   assert.ok(containsDirectContact({ x: "test@example.com" }));
 });
 test("version selection is explicit; no beta research version claim", () => {
-  assert.equal(defaultVersion, "v3");
+  assert.equal(defaultVersion, "v3.2");
   assert.equal(getVersion("v1.0").version, "v1");
   assert.equal(getVersion("v2").researchIds.length, 0);
   assert.throws(() => getVersion("__proto__"));

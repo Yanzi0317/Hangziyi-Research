@@ -1,0 +1,76 @@
+{
+  "datasetId": "survey-49-reviewed-2026-09",
+  "reviewStatus": "approved",
+  "consentScope": "consented_responses_only",
+  "sourceHash": "34376bc6cddcfbe5be36309bcf460290ae972a867718da5898b4558591c26ae6",
+  "reviewNote": "2026-09-25 资料提供者明确确认此前不同意参与的记录有误。依此确认以49份汇总为基础，不缩放、不重构个人记录。仅批准以下核对过的描述性发现；Q25因跳题分母不一致排除。这是提供者确认与汇总核对，不是独立同意审计。原始来源Survey_Report.docx（报告标注2026年9月）；Questionnaire Finding Part.docx用于交叉核对，二者是同一调查，不叠加样本。",
+  "sampleSize": 49,
+  "surveyDate": null,
+  "region": "中国境内工作者；具体采集地点未知，样本以二线城市为主",
+  "findings": [
+    {
+      "id": "SURVEY-USE",
+      "questionIds": ["Q11"],
+      "denominator": 49,
+      "type": "aggregate_survey",
+      "statement": "AI使用频率：几乎从不19人（38.78%），每月几次14人（28.57%），每周几次7人（14.29%），几乎每天9人（18.37%）。这是本样本使用频率，不是能力测试或全国普及率。",
+      "limitations": [
+        "频率类别与产品中的构建AI工具选项不一一对应；不能按频率推断个人技能。"
+      ]
+    },
+    {
+      "id": "SURVEY-RESOURCES",
+      "questionIds": ["Q13", "Q14"],
+      "denominator": 49,
+      "type": "aggregate_survey",
+      "statement": "Q13有29人（59.18%）报告组织没有明确AI政策或不清楚；Q14有32人（65.31%）选择没有列出的AI资源。资源与政策可能是需要询问的实施条件。",
+      "limitations": [
+        "Q14是多选题，可能有选项重叠；没有交叉表，不能断言缺少资源的32人就是政策不清楚的29人。",
+        "不能推定该用户或特定城市、企业一定缺少资源。"
+      ]
+    },
+    {
+      "id": "SURVEY-CONFIDENCE",
+      "questionIds": ["Q27"],
+      "denominator": 49,
+      "type": "aggregate_survey",
+      "statement": "自评提示词能力处于最低两档者22人（44.90%）；自评AI输出核验能力处于最低两档者21人（42.86%）。这些是自信程度线索，不是经过测试的技能缺口。",
+      "limitations": [
+        "两项低分群体可能重叠，不能合并为人数或推断关联；必须对用户能力另行验证。"
+      ]
+    },
+    {
+      "id": "SURVEY-UNCERTAINTY",
+      "questionIds": ["Q21"],
+      "denominator": 49,
+      "type": "aggregate_survey",
+      "statement": "23人（46.94%）选择目前无法判断未来职业走向。该观察支持展示多个条件性情景，而非给出唯一职业结论。",
+      "limitations": ["是当前主观不确定性，不是未来失业、转行或成功的发生率。"]
+    },
+    {
+      "id": "SURVEY-TRANSPARENCY",
+      "questionIds": ["Q22"],
+      "denominator": 49,
+      "type": "aggregate_survey",
+      "statement": "最希望职业预测工具提供的数据与方法依据15人（30.61%），建议学习的AI技能12人（24.49%），当前技能缺口11人（22.45%）。因此将来源、规则与可检查行动直接展示。",
+      "limitations": ["这是样本中的产品偏好，不是预测准确性或效果验证。"]
+    },
+    {
+      "id": "SURVEY-STAFFING",
+      "questionIds": ["Q17"],
+      "denominator": 49,
+      "type": "aggregate_survey",
+      "statement": "25人（51.02%）不清楚组织是否出现AI相关变化，11人（22.45%）选择没有明显变化；4人（8.16%）报告因AI减少人员数量。信息不足以估计岗位被替代概率。",
+      "limitations": [
+        "个人对组织变化的自报，不是公司就业面板或因果证据；不能外推中国劳动力市场。"
+      ]
+    }
+  ],
+  "limitations": [
+    "仅49份横截面汇总，没有个体联合记录、就业结果标签或时间序列；没有训练或验证统计预测模型。",
+    "样本集中：男性41人、32–35岁31人、高中/中专及以下35人、制造/工程/建筑/物流35人、二线城市31人；这些是分别统计的边际人数，不能推定同一群体。",
+    "报告标注2026年9月，但实际采集日期、抽样和招募方法未提供，surveyDate保留null。",
+    "Q25仍因跳题分母不一致排除；Q19/Q20为主观预期，未用来计算个人概率；Q12与Q24不合并。",
+    "同意范围依赖资料提供者2026-09-25对错误记录的明确更正；未获得逐份同意记录做独立核验。"
+  ]
+}

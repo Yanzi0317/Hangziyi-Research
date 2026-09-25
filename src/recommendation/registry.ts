@@ -44,9 +44,28 @@ export const versions = Object.freeze({
       "问卷仅在同意范围及统计口径审核通过后使用；未获批时阻止模型调用。",
     ],
   },
+  "v3.2": {
+    version: "v3.2",
+    promptVersion: "v3.2.0-scenarios",
+    status: "exploratory_scenarios",
+    runnable: true,
+    surveyDatasetId: "survey-49-reviewed-2026-09",
+    researchIds: [
+      "DOCINT-01",
+      "DOCINT-02",
+      "DOCINT-03",
+      "DOCINT-04",
+      "DOCINT-05",
+      "DOCINT-06",
+      "DOCINT-07",
+    ],
+    limitations: [
+      "49份问卷描述性汇总与六人访谈支持的条件性情景预测，未经过结局回测；Q25排除。",
+    ],
+  },
 });
 export type Version = keyof typeof versions;
-export const defaultVersion: Version = "v3";
+export const defaultVersion: Version = "v3.2";
 
 export function listVersions() {
   return Object.values(versions);

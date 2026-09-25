@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { ScenarioForecast } from "./prediction/scenario.ts";
 
 export const aiLevels = [
   "none",
@@ -163,6 +164,7 @@ export const resultSchema = z
 export type Recommendation = z.infer<typeof resultSchema>;
 export type RunResult = {
   result: Recommendation;
+  scenarioForecast?: ScenarioForecast;
   market: MarketContext;
   meta: {
     version: string;
@@ -176,6 +178,7 @@ export type RunResult = {
     researchLimitations: string[];
     runtimeMode: "live" | "mock_test";
     adjusted: boolean;
+    scenarioHash?: string;
     survey?: {
       datasetId: string;
       contextHash: string;
