@@ -20,7 +20,7 @@ export function Why({ r }: { r: Rationale }) {
           {r.marketSignalIds.join("、") || "无"}
         </p>
         <p>
-          <b>访谈观察：</b>
+          <b>研究依据（访谈/问卷）：</b>
           {r.researchFindingIds.join("、") || "无"}
         </p>
         <p>
@@ -202,14 +202,38 @@ export function Evidence({ run }: { run: RunResult }) {
         )}
       </div>
       <div className="card">
-        <h2>访谈与资料限制</h2>
-        <p>{run.meta.researchIds.join("、") || "未使用访谈观察"}</p>
+        <h2>研究与资料限制</h2>
+        <p>{run.meta.researchIds.join("、") || "未使用研究资料"}</p>
         {[...run.meta.researchLimitations, ...run.market.limitations].map(
           (s, i) => (
             <p key={i}>{s}</p>
           ),
         )}
       </div>
+      {run.meta.survey && (
+        <section className="card">
+          <h2>经审核的问卷观察（不是市场预测）</h2>
+          <p>
+            资料 {run.meta.survey.datasetId} · 获批样本{" "}
+            {run.meta.survey.sampleSize} · 调查日期{" "}
+            {run.meta.survey.date ?? "未提供"} · {run.meta.survey.region}
+          </p>
+          {run.meta.survey.findings.map((f) => (
+            <article key={f.id}>
+              <h3>
+                {f.id} · {f.questionIds.join("、")}
+              </h3>
+              <p>{f.statement}</p>
+              <p>该题分母：{f.denominator}</p>
+              <p className="hint">{f.limitations.join("；")}</p>
+            </article>
+          ))}
+          <p className="hint">
+            问卷为自报的样本观察，不代表个人能力或就业概率；列出的发现是提供给模型的上下文，逐条实际引用见研究
+            ID。
+          </p>
+        </section>
+      )}
       <div className="card">
         <h2>市场趋势与个体推断</h2>
         {run.result.industries.map((i, k) => (

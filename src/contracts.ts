@@ -176,5 +176,19 @@ export type RunResult = {
     researchLimitations: string[];
     runtimeMode: "live" | "mock_test";
     adjusted: boolean;
+    survey?: {
+      datasetId: string;
+      contextHash: string;
+      sampleSize: number;
+      date: string | null;
+      region: string;
+      findings: {
+        id: string;
+        statement: string;
+        questionIds: string[];
+        denominator: number;
+        limitations: string[];
+      }[];
+    };
   };
 };

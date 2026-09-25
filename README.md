@@ -13,6 +13,8 @@
 
 ## 版本状态
 
+新增 v3.1 问卷接入候选：已接收的真实汇总目前在本地隔离审核中，不上传到仓库、不进入模型。待同意范围和跳题口径核实后才可激活；默认仍为 v3。详见 [问卷接入说明](docs/survey-integration.md)。
+
 | 版本 | 当前实现 | 证据边界 |
 | --- | --- | --- |
 | v1 / v1.0 | 基础推荐提示词和共享引擎 | 画像、模型背景知识、公开聚合快照 |
@@ -39,6 +41,8 @@ pnpm build
 公开环境必须设置 APP_ACCESS_KEY，使用者在页面临时输入该访问密钥；它不同于模型 API key。模型密钥只在服务端。ENABLE_COMPARISON 默认 false，明确启用后才允许网页付费对比。
 
 ## 回归命令
+
+真实问卷导入命令：`pnpm import:survey <本地汇总文本路径>`。只写入被 Git 忽略的 `work/research/`，不会自动批准或公开研究资料。
 
 ```sh
 pnpm personas --version v3 --all --dry-run

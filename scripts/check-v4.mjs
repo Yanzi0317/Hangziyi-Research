@@ -10,7 +10,7 @@ import {
 // Configuration checks only: no personas, model calls, or generated recommendations.
 assert.deepEqual(
   listVersions().map((v) => v.version),
-  ["v1", "v2", "v3", "v4"],
+  ["v1", "v2", "v3", "v4", "v3.1"],
 );
 assert.equal(defaultVersion, "v3");
 assert.equal(getVersion("v4").status, "draft");

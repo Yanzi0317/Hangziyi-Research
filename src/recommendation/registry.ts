@@ -33,6 +33,17 @@ export const versions = Object.freeze({
     researchIds: ["INT-01", "INT-02", "INT-03", "INT-04", "INT-05"],
     limitations: ["无 Beta 数据；基于既有访谈和产品原则的未验证草案。"],
   },
+  "v3.1": {
+    version: "v3.1",
+    promptVersion: "v3.1.0-survey",
+    status: "awaiting_survey_review",
+    runnable: true,
+    surveyDatasetId: "survey-49-v1",
+    researchIds: ["INT-01", "INT-02", "INT-03", "INT-04", "INT-05"],
+    limitations: [
+      "问卷仅在同意范围及统计口径审核通过后使用；未获批时阻止模型调用。",
+    ],
+  },
 });
 export type Version = keyof typeof versions;
 export const defaultVersion: Version = "v3";
