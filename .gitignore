@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.vercel/
+.env*
+!.env.example
+work/
+*.tsbuildinfo
+data/beta-records/*
+!data/beta-records/.gitkeep
+beta/feedback-exports/*
+!beta/feedback-exports/.gitkeep

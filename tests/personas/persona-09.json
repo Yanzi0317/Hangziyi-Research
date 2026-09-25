@@ -1,0 +1,27 @@
+{
+  "fixtureSchemaVersion": "1.0",
+  "id": "persona-09",
+  "synthetic": true,
+  "purpose": "software_regression_only_not_research",
+  "context": {
+    "educationTier": "中等职业学校"
+  },
+  "profile": {
+    "ageRange": "40-49",
+    "education": "secondary_vocational",
+    "major": "物流服务与管理",
+    "experience": "十二年仓储经验，整理过操作规范，无编程或AI经验。",
+    "experienceYears": 12,
+    "industry": "交通运输与仓储",
+    "skills": [
+      "库存盘点",
+      "仓储管理系统",
+      "操作规范整理"
+    ],
+    "aiUseExperience": "none",
+    "locationPreference": [
+      "赣州"
+    ],
+    "careerGoals": "探索本地仓储协调与流程改善，每周能投入四小时学习。"
+  }
+}

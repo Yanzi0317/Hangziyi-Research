@@ -1,0 +1,27 @@
+{
+  "fixtureSchemaVersion": "1.0",
+  "id": "persona-02",
+  "synthetic": true,
+  "purpose": "software_regression_only_not_research",
+  "context": {
+    "educationTier": "地方普通本科"
+  },
+  "profile": {
+    "ageRange": "23-29",
+    "education": "bachelor",
+    "major": "汉语言文学",
+    "experience": "三个月编辑实习，做过校对与活动报道，没有编程经验。",
+    "experienceYears": 0.3,
+    "industry": "文化与内容服务",
+    "skills": [
+      "中文写作",
+      "编辑校对",
+      "采访提纲"
+    ],
+    "aiUseExperience": "none",
+    "locationPreference": [
+      "洛阳"
+    ],
+    "careerGoals": "在本地探索内容或运营工作，愿意学习数字工具。"
+  }
+}

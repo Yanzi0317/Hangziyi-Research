@@ -1,0 +1,27 @@
+{
+  "fixtureSchemaVersion": "1.0",
+  "id": "persona-05",
+  "synthetic": true,
+  "purpose": "software_regression_only_not_research",
+  "context": {
+    "educationTier": "地方普通本科"
+  },
+  "profile": {
+    "ageRange": "30-39",
+    "education": "bachelor",
+    "major": "会计学",
+    "experience": "七年核算与经营报表经验，尚未使用SQL或BI工具。",
+    "experienceYears": 7,
+    "industry": "制造业",
+    "skills": [
+      "财务核算",
+      "Excel",
+      "经营报表"
+    ],
+    "aiUseExperience": "occasional",
+    "locationPreference": [
+      "武汉"
+    ],
+    "careerGoals": "转向经营分析或财务数字化，保留财务经验价值。"
+  }
+}

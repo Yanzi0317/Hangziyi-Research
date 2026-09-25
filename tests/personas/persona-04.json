@@ -1,0 +1,28 @@
+{
+  "fixtureSchemaVersion": "1.0",
+  "id": "persona-04",
+  "synthetic": true,
+  "purpose": "software_regression_only_not_research",
+  "context": {
+    "educationTier": "重点高校硕士"
+  },
+  "profile": {
+    "ageRange": "23-29",
+    "education": "master",
+    "major": "社会学",
+    "experience": "半年研究助理经历，做访谈提纲、匿名编码和问卷分析；用AI整理思路并核对来源。",
+    "experienceYears": 0.5,
+    "industry": "尚未进入职场",
+    "skills": [
+      "定性访谈",
+      "问卷设计",
+      "主题分析",
+      "基础统计"
+    ],
+    "aiUseExperience": "regular",
+    "locationPreference": [
+      "上海"
+    ],
+    "careerGoals": "探索用户研究或市场研究，明确可展示的研究成果。"
+  }
+}

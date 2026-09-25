@@ -1,0 +1,27 @@
+{
+  "fixtureSchemaVersion": "1.0",
+  "id": "persona-08",
+  "synthetic": true,
+  "purpose": "software_regression_only_not_research",
+  "context": {
+    "educationTier": "民办应用型本科"
+  },
+  "profile": {
+    "ageRange": "18-22",
+    "education": "bachelor",
+    "major": "视觉传达设计",
+    "experience": "三个月设计实习，用生成式AI探索草图，自己编辑最终作品。",
+    "experienceYears": 0.3,
+    "industry": "广告与设计",
+    "skills": [
+      "版式设计",
+      "图像编辑",
+      "视觉提案"
+    ],
+    "aiUseExperience": "regular",
+    "locationPreference": [
+      "广州"
+    ],
+    "careerGoals": "探索视觉设计和内容设计，需要具体作品集反馈。"
+  }
+}

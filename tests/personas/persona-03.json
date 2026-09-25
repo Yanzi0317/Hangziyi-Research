@@ -1,0 +1,27 @@
+{
+  "fixtureSchemaVersion": "1.0",
+  "id": "persona-03",
+  "synthetic": true,
+  "purpose": "software_regression_only_not_research",
+  "context": {
+    "educationTier": "高等职业院校"
+  },
+  "profile": {
+    "ageRange": "23-29",
+    "education": "associate",
+    "major": "机电一体化",
+    "experience": "两年设备维护，能处理常见故障；不能独立编写复杂PLC程序。",
+    "experienceYears": 2,
+    "industry": "制造业",
+    "skills": [
+      "设备维护",
+      "机械识图",
+      "基础PLC"
+    ],
+    "aiUseExperience": "none",
+    "locationPreference": [
+      "芜湖"
+    ],
+    "careerGoals": "探索自动化设备调试，希望边工作边积累成果。"
+  }
+}

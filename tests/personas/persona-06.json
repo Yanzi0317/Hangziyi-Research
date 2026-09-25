@@ -1,0 +1,28 @@
+{
+  "fixtureSchemaVersion": "1.0",
+  "id": "persona-06",
+  "synthetic": true,
+  "purpose": "software_regression_only_not_research",
+  "context": {
+    "educationTier": "高等职业院校"
+  },
+  "profile": {
+    "ageRange": "30-39",
+    "education": "associate",
+    "major": "市场营销",
+    "experience": "八年门店运营，近期搭建库存异常提醒工具，尚未完成系统测试。",
+    "experienceYears": 8,
+    "industry": "零售业",
+    "skills": [
+      "库存管理",
+      "门店运营",
+      "基础Python",
+      "工作流自动化"
+    ],
+    "aiUseExperience": "build_tools",
+    "locationPreference": [
+      "成都"
+    ],
+    "careerGoals": "探索零售数字化或业务自动化，用业务成果验证能力。"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "fixtureSchemaVersion": "1.0",
+  "id": "persona-01",
+  "synthetic": true,
+  "purpose": "software_regression_only_not_research",
+  "context": {
+    "educationTier": "重点本科"
+  },
+  "profile": {
+    "ageRange": "18-22",
+    "education": "bachelor",
+    "major": "计算机科学",
+    "experience": "半年开发实习，完成接口与测试，做过检索问答原型，尚无生产运维经验。",
+    "experienceYears": 0.5,
+    "industry": "软件与信息技术",
+    "skills": [
+      "Python",
+      "SQL",
+      "自动化测试",
+      "检索问答原型"
+    ],
+    "aiUseExperience": "build_tools",
+    "locationPreference": [
+      "北京",
+      "深圳"
+    ],
+    "careerGoals": "探索AI应用开发，通过可运行项目验证部署和评估能力。"
+  }
+}

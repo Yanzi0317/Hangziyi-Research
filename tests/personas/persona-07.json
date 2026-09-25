@@ -1,0 +1,27 @@
+{
+  "fixtureSchemaVersion": "1.0",
+  "id": "persona-07",
+  "synthetic": true,
+  "purpose": "software_regression_only_not_research",
+  "context": {
+    "educationTier": "地方高校硕士"
+  },
+  "profile": {
+    "ageRange": "30-39",
+    "education": "master",
+    "major": "土木工程",
+    "experience": "六年工程协调经历，希望减少驻场，没有软件开发经历。",
+    "experienceYears": 6,
+    "industry": "建筑业",
+    "skills": [
+      "进度管理",
+      "供应商协调",
+      "风险记录"
+    ],
+    "aiUseExperience": "occasional",
+    "locationPreference": [
+      "青岛"
+    ],
+    "careerGoals": "探索减少长期出差的项目协调、采购或企业服务岗位。"
+  }
+}

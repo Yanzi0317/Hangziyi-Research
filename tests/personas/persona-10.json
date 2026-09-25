@@ -1,0 +1,29 @@
+{
+  "fixtureSchemaVersion": "1.0",
+  "id": "persona-10",
+  "synthetic": true,
+  "purpose": "software_regression_only_not_research",
+  "context": {
+    "educationTier": "地方普通本科"
+  },
+  "profile": {
+    "ageRange": "23-29",
+    "education": "bachelor",
+    "major": "英语",
+    "experience": "三年跨境客户支持，搭建过低代码FAQ原型，尚未评估准确性。",
+    "experienceYears": 3,
+    "industry": "跨境电子商务",
+    "skills": [
+      "商务英语",
+      "客户支持",
+      "知识库整理",
+      "低代码工具"
+    ],
+    "aiUseExperience": "build_tools",
+    "locationPreference": [
+      "泉州",
+      "远程"
+    ],
+    "careerGoals": "转向支持运营、知识管理或AI应用运营，保留语言优势。"
+  }
+}

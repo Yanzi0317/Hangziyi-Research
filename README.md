@@ -1,64 +1,81 @@
-# Hangziyi Research
+# 职路 · Hangziyi Research
 
-面向中国劳动力市场的 AI 职业探索网站。
+面向中国劳动力市场的职业探索应用。Next.js + TypeScript + Zod，默认推荐 v3，支持 v1/v2/v3/v4 选择和合成画像回归。
 
-## 当前状态：尚不可部署
+## 当前已实现
 
-当前仓库主要为空文件骨架，没有 `package.json`、可运行的 Next.js 应用、推荐引擎或 `/compare` 页面。v1/v2/v3 提示词、测试画像及 CLI 尚未实现。输出目录中的 `.gitkeep` 不是测试结果。不得将此仓库的现状描述为已经完成的 v3。
+- 中文画像表单、校验、技能标签；画像与结果仅在页面会话内存中，刷新即清除。
+- 服务端 OpenAI-compatible JSON 模型调用；结构、引用及基本隐私检查，格式问题最多修复一次。
+- 行业/岗位建议、技能与行动、证据与不确定性展示。
+- 人工市场快照、进程内聚合缓存、可注入搜索数据源接口。实时搜索尚未接入供应商。
+- /compare 和 CLI：固定合成画像比较行业、岗位、技能状态与不确定性原文。
+- 没有 Beta 调研、参与者存储、反馈上传、研究导出、账号或数据库。
 
-目标发布行为：新推荐默认 v3，受保护的 `/compare` 可选择 v1、v2、v3；先部署校对，再决定是否进入 Beta。
+## 版本状态
 
-## 本地设置（实现完成后）
+| 版本 | 当前实现 | 证据边界 |
+| --- | --- | --- |
+| v1 / v1.0 | 基础推荐提示词和共享引擎 | 画像、模型背景知识、公开聚合快照 |
+| v2 | 可运行的独立版本 | 问卷数据未提供，没有虚构调查规则 |
+| v3（默认） | 五条访谈观察的任务分析 | 访谈日期、地区、样本与方法未知 |
+| v4 | 可运行的待验证提示词草案 | 无 Beta 数据，不声称效果提升 |
 
-1. 安装与项目 `engines` 配置一致的 Node.js；该配置应由应用实现确定。
-2. 使用提交的 lockfile 执行 `npm ci`。当前尚无 package.json，不能执行此步骤。
-3. 将 `.env.example` 复制为 `.env.local`，填写模型服务的 API key、API 根地址与模型标识。
-4. 确认 `.env.local` 被 Git 忽略；不要把密钥提交到仓库或聊天中。
-5. 项目实现必须提供 `npm run dev`、`npm run lint`、`npm run typecheck`、`npm test` 和 `npm run build`。这些命令当前尚未定义。
+技能行动使用相同结构协议，在同次模型调用中生成。版本比较反映整份提示词的影响，不是假设已经拆分的独立行动引擎比较。
 
-## 环境变量
+## 本地运行
 
-| 名称 | 用途 |
-| --- | --- |
-| LLM_API_KEY | 模型服务密钥，只允许服务端读取 |
-| LLM_BASE_URL | 兼容 API 根地址，包含供应商要求的版本路径；调用封装再追加接口路径 |
-| LLM_MODEL | 供应商实际支持的模型标识 |
+安装 Node.js 22+ 与 pnpm 11.25.0（本次使用 Node 24 验证）。
 
-这些是待实现封装的配置约定，不表示当前代码已消费它们。缺少密钥不得阻止静态页面构建，但模型请求须返回明确错误。不得使用 NEXT_PUBLIC_ 暴露密钥。
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
+pnpm typecheck
+pnpm test
+pnpm build
+```
 
-## 添加逻辑版本
+复制 .env.example 为 .env.local，填写服务端 LLM_API_KEY、LLM_BASE_URL、LLM_MODEL。根地址包含供应商所需的 /v1 等路径，程序再追加 /chat/completions。供应商须支持 JSON object 响应模式。缺少配置时页面和构建仍正常，生成操作明确失败。
 
-1. 在 `src/recommendation/<new-version>/` 新建引擎、manifest 和 system-prompt.md，遵循已实现的共享协议。
-2. 保留旧版本文件及冻结哈希，不覆盖旧提示词。
-3. 在 registry 注册新版本；默认版本与可选版本分开管理。部署本次要求默认 v3，v1/v2 仍可选。
-4. 记录提示词、市场及研究快照、行动计划和输出规则版本。
-5. 使用相同合成画像与受控配置回归，说明模型随机性及其他配置变化。
-6. 通过测试后再切换默认版本。未知版本报错，不回退伪装成功。
+公开环境必须设置 APP_ACCESS_KEY，使用者在页面临时输入该访问密钥；它不同于模型 API key。模型密钥只在服务端。ENABLE_COMPARISON 默认 false，明确启用后才允许网页付费对比。
 
-当前引擎和注册表为空，以上是实施约定，并非现有可运行接口。
+## 回归命令
 
-## Vercel 手动部署（前置实现通过构建后）
+```sh
+pnpm personas --version v3 --all --dry-run
+pnpm compare --all --left v1 --right v3 --dry-run
+# CLI 不自动读取 Next.js 的 .env.local；可通过 Node 显式加载：
+node --env-file=.env.local --import tsx scripts/run-personas.ts --version v3 --all
+node --env-file=.env.local --import tsx scripts/compare.ts --all --left v1 --right v3
+```
 
-1. 登录 Vercel，选择 Add New → Project，连接 GitHub 并导入 `Yanzi0317/Hangziyi-Research`。
-2. 选择实际包含 package.json 的 Root Directory；采用 Next.js preset，使用项目的安装和构建脚本。
-3. 在项目 Settings → Environment Variables 中设置上述三个变量。只为需要的 Preview/Production 环境配置，不把密钥写入代码或 vercel.json。
-4. 先用非生产分支生成 Preview。配置变更后重新部署才能生效。
-5. Preview 必须有访问保护，尤其是能调用收费模型的 `/compare` 和推荐 API；保护页面同时保护接口。
-6. 等待 Ready，保存实际部署 URL 与提交 SHA，按下方清单校对。没有成功部署不能填写示例 URL 冒充结果。
-7. 校对完成后仍不自动开放 Beta；记录待用户验收状态。
+十份 tests/personas 文件明确为 synthetic/software_regression_only_not_research，学校背景仅为测试覆盖标签，不送入模型。它们不是 Beta 参与者，不提供调研证据。
 
-Vercel Hobby 仅限个人非商业用途。免费托管不代表模型调用免费。账户或提交作者权限问题应通过正确账户授权解决，不能伪造作者身份。
+真实运行需要模型配置，可能收费。逐版本输出写到 tests/outputs/<version>/；对比写到 gitignored 的 work/comparisons/。缺少 API key 时拒绝运行，不生成替代输出。默认不覆盖已有单份结果。当前只完成 mock 合同测试，未生成真实模型基线，因此历史发布说明中的前后引文仍不能补写。
 
-官方参考：[GitHub 集成](https://vercel.com/docs/git/vercel-for-github)、[环境变量](https://vercel.com/docs/environment-variables)、[Preview 环境](https://vercel.com/docs/deployments/environments)、[Hobby 适用范围](https://vercel.com/docs/plans/hobby)。
+## 市场资料
 
-## 部署后校对与 Beta 门槛
+维护 data/market-snapshots/initial.json。src/contracts.ts 中的 snapshotSchema 是实际校验规则，src/market-data/snapshot.schema.json 为对应 JSON Schema。每条聚合信号必须包含出处、日期、地区、行业、角色、适用期和限制。不录入个人社交帖或招聘联系人资料。
 
-- 首页、六个模块与 /compare 可访问，手机布局与中文文案正常。
-- 合成画像生成的结果元数据显示实际执行 v3；v1/v2 选择运行独立旧版本。
-- 缺失配置、超时、失败及重复点击得到正确处理。
-- 引用、日期、地区、不确定性和输出规则显示正确，无虚构调查数据。
-- 客户端与日志不泄露密钥或画像；Feedback 未授权不保存。
-- 对比 API 受保护，不是公开无限模型调用入口。
-- 报告实际测试项、失败项、部署 URL 和提交 SHA。功能不完整时不标记为可进入 Beta。
+初始快照为空，不用伪造数据填充。搜索接口仅保留可注入适配能力；当前没有自动联网查询市场信息。
 
-部署提示词见 `prompts/prompt-14-deploy.md`。
+## 新增逻辑版本
+
+1. 新建 src/recommendation/<version>/system-prompt.md。
+2. 在 registry.ts 注册新版本及研究依据；保留旧提示词。
+3. 在 engine.ts 明确其提示词组合；更改共享协议或输出规则需独立标版本。
+4. 使用相同模型参数、画像和快照比较，保留失败状态，不能将模型随机差异直接解释成改进。
+5. 通过测试后单独决定是否改变 defaultVersion。当前仍为 v3。
+
+## 部署到 Vercel
+
+导入此仓库，使用 Next.js preset，根目录为仓库根，构建命令 pnpm build。配置 LLM_API_KEY、LLM_BASE_URL、LLM_MODEL、APP_ACCESS_KEY；需要网页比较时再设置 ENABLE_COMPARISON=true。Preview/Production 的变量分别配置，变更后重新部署。密钥不得使用 NEXT_PUBLIC_ 前缀。
+
+建议先使用受保护的 Preview 校对。公开环境没有 APP_ACCESS_KEY 时，模型 API 拒绝调用。没有用户身份验证体系，不应将共享访问密钥作为大规模公开运营的完整防护。
+
+Vercel Hobby 仅适用于个人非商业用途；模型 API 费用另计。部署本次尚未执行，没有公共网址。参考：[环境变量](https://vercel.com/docs/environment-variables)、[GitHub 部署](https://vercel.com/docs/git/vercel-for-github)。
+
+## 当前限制
+
+输出约束和隐私规则是风险防线，不能保证识别全部自然语言违规或身份信息；不要输入身份细节。模型服务及托管平台的留存需按供应商配置另行核实。课程与证书不做联网核验，默认推荐项目任务。未完成真实模型端到端质量评估。
+
+此前 prompts/ 中的文档保留为设计历史，含 Beta 的历史计划不代表当前实现或授权；当前以此 README 和“排除 Beta 调研”范围为准。
